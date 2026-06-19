@@ -1,0 +1,14 @@
+{
+  "source": "leadlocator",
+  "event_type": "user.registered",
+  "timestamp": "2026-06-19T10:00:00Z",
+  "user_id": "test_user_001",
+  "email": "owner@examplecleaning.co.uk",
+  "domain": "examplecleaning.co.uk",
+  "plan_type": null,
+  "organization_id": "org_test_001",
+  "stripe_customer_id": null,
+  "subscription_status": "none",
+  "current_stage": "registered_not_paid",
+  "recommended_next_process": "unpaid_registration_followup"
+}
