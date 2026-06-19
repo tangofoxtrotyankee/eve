@@ -1,0 +1,21 @@
+services:
+  eve:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: eve-local
+    container_name: eve
+    ports:
+      - "${EVE_DOCKER_PORT:-44513}:${EVE_DOCKER_PORT:-44513}"
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    environment:
+      EVE_DOCKER_DEV: "1"
+      EVE_DOCKER_PORT: "${EVE_DOCKER_PORT:-44513}"
+      EVE_DOCKER_HOST: "0.0.0.0"
+      EVE_DOCKER_AGENT: "${EVE_DOCKER_AGENT:-weather-agent}"
+      PORT: "${EVE_DOCKER_PORT:-44513}"
+    command: ["node", "scripts/docker/dev.mjs"]
+    stdin_open: true
+    tty: true

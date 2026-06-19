@@ -50,6 +50,18 @@ pnpm dev
 
 This runs the `eve` package build in watch mode alongside the [`apps/fixtures/weather-agent`](./apps/fixtures/weather-agent) fixture on an OS-assigned available localhost port. The fixture prints the selected URL at startup.
 
+### Docker (Windows-friendly)
+
+To run eve in Docker without installing Node.js on the host:
+
+```bash
+docker compose up
+```
+
+Then open **http://localhost:44513**. The container mounts the repo, builds eve, and starts the weather-agent demo on a fixed port bound to `0.0.0.0`. See [`docs/guides/docker.md`](./docs/guides/docker.md) for credentials, custom agents, and troubleshooting.
+
+On Windows PowerShell, use `docker compose up` directly — a bash setup script is not required.
+
 ## Testing
 
 ```bash
