@@ -5,6 +5,20 @@ const PORT = process.env.EVE_DOCKER_PORT ?? "44513";
 const HOST = process.env.EVE_DOCKER_HOST ?? "0.0.0.0";
 const AGENT_FILTER = process.env.EVE_DOCKER_AGENT ?? "weather-agent";
 
+// Credentials are injected from repo-root .env / .env.local via compose's
+// env_file. If none reached the container, chat will fail at the first model
+// call, so surface the cause up front rather than mid-conversation.
+const MODEL_CREDENTIAL_ENV_VARS = [
+  "AI_GATEWAY_API_KEY",
+  "VERCEL_OIDC_TOKEN",
+  "ANTHROPIC_API_KEY",
+  "OPENAI_API_KEY",
+];
+
+function hasModelCredential() {
+  return MODEL_CREDENTIAL_ENV_VARS.some((name) => (process.env[name] ?? "").length > 0);
+}
+
 function run(command, args, options = {}) {
   return new Promise((resolve, reject) => {
     const child = spawn(command, args, {
@@ -72,6 +86,14 @@ async function main() {
   console.log("Custom agents outside the pnpm workspace cannot resolve the local eve package.");
   console.log("See docs/guides/docker.md for details.");
   console.log("");
+
+  if (!hasModelCredential()) {
+    console.warn("[eve:docker] No model credential detected in the container environment.");
+    console.warn("[eve:docker] Chat will fail until one is set. Add it to a repo-root .env.local");
+    console.warn("[eve:docker] (for example AI_GATEWAY_API_KEY=...), then restart.");
+    console.warn("[eve:docker] See docs/guides/docker.md#model-credentials.");
+    console.warn("");
+  }
 
   if (!existsSync("node_modules")) {
     console.log("[eve:docker] Installing dependencies...");

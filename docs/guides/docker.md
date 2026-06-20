@@ -32,7 +32,22 @@ docker compose down
 
 ## Model credentials
 
-The demo agent calls a real model. Before chatting, provide credentials in `.env.local` at the repo root (or link a Vercel project with `vercel link` and `vercel env pull`). See [Getting started](../getting-started) for gateway and provider options.
+The demo agent calls a real model, so chat fails until the container has a model credential in its environment.
+
+Create a `.env.local` file at the repository root with the credential for your model. The scaffold's default model routes through the Vercel AI Gateway:
+
+```bash
+# .env.local (repo root)
+AI_GATEWAY_API_KEY=your-gateway-key
+```
+
+For a direct provider model, set that provider's key instead (for example `ANTHROPIC_API_KEY` or `OPENAI_API_KEY`). See [Getting started](../getting-started) for gateway and provider options.
+
+Compose loads this file via its [`env_file`](https://docs.docker.com/compose/how-tos/environment-variables/set-environment-variables/#use-the-env_file-attribute) attribute and injects the keys into the container's environment, so the agent process picks them up from `process.env`. Both `.env` and `.env.local` are read (with `.env.local` taking precedence); each is optional, so `docker compose up` still boots without them — only chat requests that reach the model will fail.
+
+> A repo-root `.env.local` is **not** the same as an app-local one. eve's dev server reads env files relative to the agent root (for example `apps/fixtures/weather-agent/.env.local`), and Docker Compose's default `.env` is only used for variable interpolation in `docker-compose.yml`. The `env_file` attribute above is what bridges your repo-root credentials into the running container.
+
+Alternatively, link a Vercel project with `vercel link` and `vercel env pull .env.local` to populate the file.
 
 ## Why not `docker run` alone?
 
