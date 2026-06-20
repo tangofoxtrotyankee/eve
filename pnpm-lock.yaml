@@ -392,6 +392,15 @@ importers:
         specifier: 'catalog:'
         version: 25.9.1
 
+  apps/leadlocator:
+    dependencies:
+      eve:
+        specifier: workspace:*
+        version: link:../../packages/eve
+      zod:
+        specifier: 'catalog:'
+        version: 4.4.3
+
   apps/templates/web-chat-next:
     dependencies:
       '@radix-ui/react-use-controllable-state':
@@ -11724,6 +11733,7 @@ packages:
 
   stream-to-promise@2.2.0:
     resolution: {integrity: sha512-HAGUASw8NT0k8JvIVutB2Y/9iBk7gpgEyAudXwNJmZERdMITGdajOa4VJfD/kNiA3TppQpTP4J+CtcHwdzKBAw==}
+    deprecated: Deprecated. Use node:stream/promises and node:stream/consumers instead.
 
   streamdown@2.5.0:
     resolution: {integrity: sha512-/tTnURfIOxZK/pqJAxsfCvETG/XCJHoWnk3jq9xLcuz6CSpnjjuxSRBTTL4PKGhxiZQf0lqPxGhImdpwcZ2XwA==}
