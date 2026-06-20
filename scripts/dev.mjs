@@ -1,13 +1,31 @@
 import { spawn } from "node:child_process";
 
+const isDockerDev = process.env.EVE_DOCKER_DEV === "1";
+const dockerPort = process.env.EVE_DOCKER_PORT ?? "44513";
+const dockerHost = process.env.EVE_DOCKER_HOST ?? "0.0.0.0";
+
+const weatherAgentDevArgs = isDockerDev
+  ? [
+      "--filter",
+      "weather-agent",
+      "run",
+      "dev",
+      "--no-ui",
+      "--host",
+      dockerHost,
+      "--port",
+      dockerPort,
+    ]
+  : // Port 0 asks the OS to allocate an available port atomically.
+    ["--filter", "weather-agent", "run", "dev", "--no-ui", "--port", "0"];
+
 const commands = [
   {
     args: ["--filter", "eve", "run", "dev"],
     label: "eve",
   },
   {
-    // Port 0 asks the OS to allocate an available port atomically.
-    args: ["--filter", "weather-agent", "run", "dev", "--no-ui", "--port", "0"],
+    args: weatherAgentDevArgs,
     label: "weather-agent",
   },
 ];

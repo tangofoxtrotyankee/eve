@@ -2,6 +2,7 @@
   "title": "Guides",
   "pages": [
     "deployment",
+    "docker",
     "auth-and-route-protection",
     "instrumentation",
     "hooks",
