@@ -4,6 +4,7 @@
   "private": true,
   "description": "Monorepo for eve, a filesystem-first framework for durable backend agents on Vercel.",
   "workspaces": [
+    "agents/*",
     "apps/*",
     "apps/*/*",
     "e2e/fixtures/*",
@@ -15,6 +16,8 @@
     "changeset": "changeset",
     "check:deps": "syncpack lint",
     "dev": "node ./scripts/dev.mjs",
+    "docker:up": "docker compose up",
+    "docker:dev": "node ./scripts/docker/dev.mjs",
     "docs:check": "node ./scripts/check-docs.mjs && node ./scripts/check-doc-snippets.mjs && node ./scripts/check-doc-mdx.mjs",
     "fix:deps": "syncpack fix-mismatches && syncpack format",
     "fmt": "oxfmt",

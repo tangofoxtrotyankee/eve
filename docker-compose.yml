@@ -1,0 +1,30 @@
+services:
+  eve:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: eve-local
+    container_name: eve
+    ports:
+      - "${EVE_DOCKER_PORT:-44513}:${EVE_DOCKER_PORT:-44513}"
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    # Inject model credentials from repo-root env files into the container so
+    # they reach process.env for the agent. Both are optional, so a bare
+    # `docker compose up` still boots without them. `.env.local` is listed last
+    # to take precedence, matching eve's own dev env precedence.
+    env_file:
+      - path: .env
+        required: false
+      - path: .env.local
+        required: false
+    environment:
+      EVE_DOCKER_DEV: "1"
+      EVE_DOCKER_PORT: "${EVE_DOCKER_PORT:-44513}"
+      EVE_DOCKER_HOST: "0.0.0.0"
+      EVE_DOCKER_AGENT: "${EVE_DOCKER_AGENT:-weather-agent}"
+      PORT: "${EVE_DOCKER_PORT:-44513}"
+    command: ["node", "scripts/docker/dev.mjs"]
+    stdin_open: true
+    tty: true

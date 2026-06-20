@@ -85,3 +85,8 @@ RUN set -eux; \
   chmod 0440 /etc/sudoers.d/vercel-sandbox
 
 WORKDIR /workspace
+
+EXPOSE 44513
+
+# When the repo is bind-mounted at /workspace, docker compose runs the dev entrypoint.
+CMD ["node", "scripts/docker/dev.mjs"]
